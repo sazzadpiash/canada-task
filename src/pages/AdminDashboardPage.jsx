@@ -113,14 +113,14 @@ const AdminDashboardPage = () => {
                             <span>Most Liked</span>
                         </div>
 
-                        {video.map((singleVideo) => (
+                        {video.map((singleVideo, index) => (
                             <Card
                                 key={singleVideo.id}
                                 singleVideo={singleVideo}
                                 cardType="card"
                                 moveCard={moveCard}
                                 id={singleVideo.id}
-                                index={singleVideo.id}
+                                index={index}
                             ></Card>
                         ))}
                         <div className="text-right">
