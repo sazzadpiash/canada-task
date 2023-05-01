@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { AuthContext } from "../authContext";
-import { DndProvider, useDrag } from "react-dnd";
+import update from "immutability-helper";
+import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import Card from "../components/Card";
+// dnd
 
 const AdminDashboardPage = () => {
     const { state, dispatch } = React.useContext(AuthContext);
@@ -12,6 +14,26 @@ const AdminDashboardPage = () => {
     const [time, setTime] = useState(new Date());
     const [video, setVideo] = useState([]);
     const [page, setPage] = useState(1);
+    // const [cards, setCards] = useState(video);
+
+    const moveCard = useCallback((dragIndex, hoverIndex) => {
+        setVideo((prevCards) =>
+            update(prevCards, {
+                $splice: [
+                    [dragIndex, 1],
+                    [hoverIndex, 0, prevCards[dragIndex]],
+                ],
+            })
+        );
+    }, []);
+
+    // useEffect(() => {
+    //     setCards(video);
+    // }, [video]);
+
+    // useEffect(() => {
+    //     setVideo(cards);
+    // }, [cards]);
 
     useEffect(() => {
         setTime(new Date());
@@ -95,9 +117,21 @@ const AdminDashboardPage = () => {
                             <Card
                                 key={singleVideo.id}
                                 singleVideo={singleVideo}
+                                cardType="card"
+                                moveCard={moveCard}
+                                id={singleVideo.id}
+                                index={singleVideo.id}
                             ></Card>
                         ))}
                         <div className="text-right">
+                            <button
+                                onClick={() => {
+                                    setPage(page - 1);
+                                }}
+                                className="bg-[#9bff00] text-black px-5 py-1 rounded mr-3"
+                            >
+                                Previous
+                            </button>
                             <button
                                 onClick={() => {
                                     setPage(page + 1);
