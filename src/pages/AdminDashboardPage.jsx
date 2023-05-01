@@ -11,6 +11,7 @@ const AdminDashboardPage = () => {
     const today = new Date().toLocaleDateString("en-US", options);
     const [time, setTime] = useState(new Date());
     const [video, setVideo] = useState([]);
+    const [page, setPage] = useState(1);
 
     useEffect(() => {
         setTime(new Date());
@@ -24,14 +25,14 @@ const AdminDashboardPage = () => {
             },
             body: JSON.stringify({
                 payload: {},
-                page: 1,
+                page: page,
                 limit: 10,
             }),
         })
             .then((response) => response.json())
             .then((data) => setVideo(data.list))
             .catch((error) => console.error(error));
-    }, [state]);
+    }, [state, page]);
 
     console.log(video);
     return (
@@ -96,6 +97,16 @@ const AdminDashboardPage = () => {
                                 singleVideo={singleVideo}
                             ></Card>
                         ))}
+                        <div className="text-right">
+                            <button
+                                onClick={() => {
+                                    setPage(page + 1);
+                                }}
+                                className="bg-[#9bff00] text-black px-5 py-1 rounded"
+                            >
+                                Next
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
